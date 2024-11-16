@@ -15,7 +15,7 @@ class _MainNavigationState extends State<MainNavigation> {
   int _currentIndex = 0;
 
   final List<Widget> _tabViews = [
-    HomiPage(),
+    const HomiPage(),
     const WatchPage(),
     const SettingsP(),
   ];
@@ -34,7 +34,7 @@ class _MainNavigationState extends State<MainNavigation> {
         Positioned(
           left: 12,
           right: 12,
-          bottom: 8,
+          bottom: 30,
           child: Container(
             height: 70,
             decoration: BoxDecoration(

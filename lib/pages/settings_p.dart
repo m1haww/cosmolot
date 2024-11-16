@@ -50,7 +50,7 @@ class _SettingsPState extends State<SettingsP> {
           child: Stack(
             children: [
               // Stars animation in the background
-              AnimatedStars(),
+              const AnimatedStars(),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -111,6 +111,8 @@ class _SettingsPState extends State<SettingsP> {
 }
 
 class AnimatedStars extends StatefulWidget {
+  const AnimatedStars({super.key});
+
   @override
   _AnimatedStarsState createState() => _AnimatedStarsState();
 }

@@ -1,20 +1,28 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cosmolot/models/file.article.dart';
 
 class DetailNewsPage extends StatelessWidget {
   final Article article;
 
-  const DetailNewsPage({required this.article});
+  const DetailNewsPage({super.key, required this.article});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xff2E073F),
       appBar: AppBar(
+        leading: IconButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          icon: const Icon(CupertinoIcons.back),
+          color: Colors.white,
+        ),
         backgroundColor: const Color(0xFF3C0753),
-        title: Text(
+        title: const Text(
           "News",
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 22,
             fontWeight: FontWeight.bold,
             color: Colors.white,

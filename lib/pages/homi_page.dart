@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:cosmolot/utils/utils.api.dart';
 
 class HomiPage extends StatefulWidget {
+  const HomiPage({super.key});
+
   @override
   _HomiPageState createState() => _HomiPageState();
 }
@@ -83,11 +85,11 @@ class _HomiPageState extends State<HomiPage> {
           child: Row(
             children: [
               FittedBox(
-                fit: BoxFit.scaleDown, // This will scale the text to fit
+                fit: BoxFit.scaleDown,
                 child: Text(
                   'News',
                   style: TextStyle(
-                    fontSize: 20,
+                    fontSize: 16,
                     fontWeight: FontWeight.bold,
                     color: Colors.black,
                   ),
@@ -157,41 +159,43 @@ class _HomiPageState extends State<HomiPage> {
                   itemBuilder: (context, index) {
                     final article = filteredBreakingNews[index];
 
-                    return Container(
-                      width: 300,
-                      margin: const EdgeInsets.only(right: 12),
-                      child: Card(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        elevation: 6,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(20),
-                          child: Stack(
-                            children: [
-                              Image.network(
-                                article.imageUrl,
-                                height: 250,
-                                width: double.infinity,
-                                fit: BoxFit.cover,
-                                errorBuilder: (context, error, stackTrace) {
-                                  return Image.asset(
-                                    'images/brat.webp',
-                                    height: 250,
-                                    width: double.infinity,
-                                    fit: BoxFit.cover,
-                                  );
-                                },
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => DetailNewsPage(
-                                              article: article)));
-                                },
-                                child: Container(
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                DetailNewsPage(article: article),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        width: 300,
+                        margin: const EdgeInsets.only(right: 12),
+                        child: Card(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          elevation: 6,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child: Stack(
+                              children: [
+                                Image.network(
+                                  article.imageUrl,
+                                  height: 250,
+                                  width: double.infinity,
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return Image.asset(
+                                      'images/brat.webp',
+                                      height: 250,
+                                      width: double.infinity,
+                                      fit: BoxFit.cover,
+                                    );
+                                  },
+                                ),
+                                Container(
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(20),
                                     gradient: const LinearGradient(
@@ -204,53 +208,54 @@ class _HomiPageState extends State<HomiPage> {
                                     ),
                                   ),
                                 ),
-                              ),
-                              Positioned(
-                                left: 10,
-                                top: 10,
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 10, vertical: 5),
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xffAD49E1),
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  child: Text(
-                                    article.newsSite,
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 12,
+                                Positioned(
+                                  left: 10,
+                                  top: 10,
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 5),
+                                    decoration: BoxDecoration(
+                                      color: const Color(0xffAD49E1),
+                                      borderRadius: BorderRadius.circular(12),
                                     ),
-                                  ),
-                                ),
-                              ),
-                              Positioned(
-                                left: 10,
-                                bottom: 10,
-                                right: 10,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      article.title,
+                                    child: Text(
+                                      article.newsSite,
                                       style: const TextStyle(
                                         color: Colors.white,
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 4),
-                                    Text(
-                                      article.publishedAt.substring(0, 10),
-                                      style: const TextStyle(
-                                        color: Colors.white70,
                                         fontSize: 12,
                                       ),
                                     ),
-                                  ],
+                                  ),
                                 ),
-                              ),
-                            ],
+                                Positioned(
+                                  left: 10,
+                                  bottom: 10,
+                                  right: 10,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        article.title,
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 4),
+                                      Text(
+                                        article.publishedAt.substring(0, 10),
+                                        style: const TextStyle(
+                                          color: Colors.white70,
+                                          fontSize: 12,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),

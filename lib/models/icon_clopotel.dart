@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 // Custom Widget for Notification Icon
 class NotificationIcon extends StatelessWidget {
-  const NotificationIcon({Key? key}) : super(key: key);
+  const NotificationIcon({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +22,7 @@ class NotificationIcon extends StatelessWidget {
       builder: (context) {
         return Container(
           decoration: const BoxDecoration(
-            color: const Color(0xff2E073F),
+            color: Color(0xff2E073F),
             borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
           ),
           child: Padding(

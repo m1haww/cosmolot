@@ -1,16 +1,24 @@
 import 'package:cosmolot/models/file_article_rocket.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class DetailPage extends StatelessWidget {
   final RocketArticle article;
 
-  const DetailPage({required this.article});
+  const DetailPage({super.key, required this.article});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xff2E073F),
+      backgroundColor: const Color(0xff2E073F),
       appBar: AppBar(
+        leading: IconButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          icon: const Icon(CupertinoIcons.back),
+          color: Colors.white,
+        ),
         backgroundColor: const Color(0xFF3C0753),
         title: const Text(
           'SpaceX Launch Details',
@@ -72,8 +80,8 @@ class DetailPage extends StatelessWidget {
                 shrinkWrap:
                     true, // Allows the grid to take up only necessary space
                 physics:
-                    NeverScrollableScrollPhysics(), // Disable scrolling for this grid
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    const NeverScrollableScrollPhysics(), // Disable scrolling for this grid
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2, // Two columns
                   crossAxisSpacing: 16.0, // Space between columns
                   mainAxisSpacing: 16.0, // Space between rows

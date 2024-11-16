@@ -14,9 +14,9 @@ class _WatchPageState extends State<WatchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xff9B7EBD),
+      backgroundColor: const Color(0xff9B7EBD),
       appBar: AppBar(
-        backgroundColor: Color(0xff9B7EBD),
+        backgroundColor: const Color(0xff9B7EBD),
         title: const Text(
           'SpaceX LaunchApp',
           style: TextStyle(
@@ -64,7 +64,7 @@ class _WatchPageState extends State<WatchPage> {
 class LaunchItemCard extends StatelessWidget {
   final RocketArticle article;
 
-  const LaunchItemCard({required this.article});
+  const LaunchItemCard({super.key, required this.article});
 
   @override
   Widget build(BuildContext context) {

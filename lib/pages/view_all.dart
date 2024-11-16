@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cosmolot/models/file.article.dart';
 
@@ -5,18 +6,25 @@ class ViewAll extends StatelessWidget {
   final String title;
   final List<Article> articles;
 
-  ViewAll({required this.title, required this.articles});
+  const ViewAll({super.key, required this.title, required this.articles});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFF3C0753),
       appBar: AppBar(
+        leading: IconButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          icon: const Icon(CupertinoIcons.back),
+          color: Colors.white,
+        ),
         title: Text(
           title,
           style: const TextStyle(color: Colors.white),
         ),
-        backgroundColor: Color(0xff2E073F),
+        backgroundColor: const Color(0xff2E073F),
       ),
       body: Padding(
         padding: const EdgeInsets.only(bottom: 30.0),
