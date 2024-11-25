@@ -4,6 +4,7 @@ import 'package:cosmolot/pages/detail_news_page.dart';
 import 'package:cosmolot/pages/view_all.dart';
 import 'package:flutter/material.dart';
 import 'package:cosmolot/utils/utils.api.dart';
+import 'package:flutter/services.dart';
 
 class HomiPage extends StatefulWidget {
   const HomiPage({super.key});
@@ -54,6 +55,7 @@ class _HomiPageState extends State<HomiPage> {
     return Scaffold(
       backgroundColor: const Color(0xff9B7EBD),
       appBar: AppBar(
+        surfaceTintColor: Colors.transparent,
         backgroundColor: const Color(0xff9B7EBD),
         centerTitle: true,
         title: isSearching
@@ -114,7 +116,7 @@ class _HomiPageState extends State<HomiPage> {
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.symmetric(horizontal: 15),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -128,12 +130,14 @@ class _HomiPageState extends State<HomiPage> {
                 TextButton(
                   onPressed: () {
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => ViewAll(
-                                  title: 'Breaking News',
-                                  articles: breakingNewsArticles,
-                                )));
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ViewAll(
+                          title: 'Breaking News',
+                          articles: breakingNewsArticles,
+                        ),
+                      ),
+                    );
                   },
                   child: const Text('View all'),
                 ),
@@ -154,6 +158,8 @@ class _HomiPageState extends State<HomiPage> {
                   });
                 },
                 child: ListView.builder(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 6, horizontal: 3),
                   scrollDirection: Axis.horizontal,
                   itemCount: filteredBreakingNews.length,
                   itemBuilder: (context, index) {
@@ -177,10 +183,13 @@ class _HomiPageState extends State<HomiPage> {
                             borderRadius: BorderRadius.circular(20),
                           ),
                           elevation: 6,
+                          shadowColor: Colors.black
+                              .withOpacity(0.2), // Soft shadow for depth
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(20),
                             child: Stack(
                               children: [
+                                // Background Image
                                 Image.network(
                                   article.imageUrl,
                                   height: 250,
@@ -195,12 +204,14 @@ class _HomiPageState extends State<HomiPage> {
                                     );
                                   },
                                 ),
+                                // Gradient Overlay
                                 Container(
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(20),
                                     gradient: const LinearGradient(
                                       colors: [
-                                        Color(0xFFEBD3F8),
+                                        Color(
+                                            0xD9EBD3F8), // Semi-transparent purple
                                         Colors.transparent,
                                       ],
                                       begin: Alignment.bottomCenter,
@@ -208,6 +219,7 @@ class _HomiPageState extends State<HomiPage> {
                                     ),
                                   ),
                                 ),
+                                // News Site Badge
                                 Positioned(
                                   left: 10,
                                   top: 10,
@@ -215,7 +227,8 @@ class _HomiPageState extends State<HomiPage> {
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 10, vertical: 5),
                                     decoration: BoxDecoration(
-                                      color: const Color(0xffAD49E1),
+                                      color: const Color(
+                                          0xffAD49E1), // Purple color
                                       borderRadius: BorderRadius.circular(12),
                                     ),
                                     child: Text(
@@ -223,10 +236,13 @@ class _HomiPageState extends State<HomiPage> {
                                       style: const TextStyle(
                                         color: Colors.white,
                                         fontSize: 12,
+                                        fontWeight: FontWeight
+                                            .w600, // Slightly bold for emphasis
                                       ),
                                     ),
                                   ),
                                 ),
+                                // Title and Date
                                 Positioned(
                                   left: 10,
                                   bottom: 10,
@@ -239,16 +255,26 @@ class _HomiPageState extends State<HomiPage> {
                                         article.title,
                                         style: const TextStyle(
                                           color: Colors.white,
-                                          fontSize: 18,
+                                          fontSize:
+                                              16, // Slightly smaller for a cleaner look
                                           fontWeight: FontWeight.bold,
+                                          height: 1.3, // Adjusted for spacing
                                         ),
+                                        maxLines:
+                                            2, // Limit to 2 lines if needed
+                                        overflow: TextOverflow
+                                            .ellipsis, // Avoid text overflow
                                       ),
-                                      const SizedBox(height: 4),
+                                      const SizedBox(
+                                          height:
+                                              6), // Space between title and date
                                       Text(
                                         article.publishedAt.substring(0, 10),
                                         style: const TextStyle(
                                           color: Colors.white70,
                                           fontSize: 12,
+                                          fontWeight: FontWeight
+                                              .w500, // Light font weight for date
                                         ),
                                       ),
                                     ],
@@ -293,25 +319,31 @@ class _HomiPageState extends State<HomiPage> {
                   itemBuilder: (context, index) {
                     final article = filteredRecommendations[index];
                     return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      padding: const EdgeInsets.symmetric(vertical: 5.0),
                       child: GestureDetector(
                         onTap: () {
+                          // Add haptic feedback when tapping the card
+                          HapticFeedback.selectionClick();
                           Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    DetailNewsPage(article: article),
-                              ));
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  DetailNewsPage(article: article),
+                            ),
+                          );
                         },
                         child: Card(
                           color: const Color(0xffEBD3F8),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15),
+                            borderRadius:
+                                BorderRadius.circular(20), // Soften corners
                           ),
-                          elevation: 3,
+                          elevation: 6, // Adding subtle shadow for depth
+                          shadowColor: Colors.black
+                              .withOpacity(0.1), // Light shadow for depth
                           child: ListTile(
                             leading: ClipRRect(
-                              borderRadius: BorderRadius.circular(10),
+                              borderRadius: BorderRadius.circular(15),
                               child: Image.network(
                                 article.imageUrl,
                                 width: 80,
@@ -330,22 +362,33 @@ class _HomiPageState extends State<HomiPage> {
                             title: Text(
                               article.title,
                               style: const TextStyle(
-                                fontWeight: FontWeight.bold,
+                                fontWeight: FontWeight
+                                    .w600, // Slightly less bold for better flow
+                                fontSize: 16, // Larger for better readability
                               ),
+                              maxLines: 2,
+                              overflow: TextOverflow
+                                  .ellipsis, // Avoid overflow in the title
                             ),
                             subtitle: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const SizedBox(height: 5),
+                                const SizedBox(height: 6),
                                 Text(
                                   article.newsSite,
                                   style: TextStyle(
-                                      fontSize: 12, color: Colors.grey[600]),
+                                    fontSize: 12,
+                                    color: Colors.grey[
+                                        600], // Light grey for subtle text
+                                  ),
                                 ),
                                 Text(
                                   article.publishedAt.substring(0, 10),
                                   style: TextStyle(
-                                      fontSize: 12, color: Colors.grey[600]),
+                                    fontSize: 12,
+                                    color: Colors
+                                        .grey[600], // Grey text color for date
+                                  ),
                                 ),
                               ],
                             ),

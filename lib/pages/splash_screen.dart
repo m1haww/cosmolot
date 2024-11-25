@@ -1,4 +1,4 @@
-import 'package:cosmolot/pages/main_navigation.dart';
+import 'package:cosmolot/pages/onboarding_pages.dart';
 import 'package:cosmolot/utils/rockets.api.dart';
 import 'package:cosmolot/utils/utils.api.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +21,7 @@ class _SplashScreenState extends State<SplashScreen> {
       if (mounted) {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const MainNavigation()),
+          MaterialPageRoute(builder: (context) => const OnboardingPages()),
         );
       }
     });

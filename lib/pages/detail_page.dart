@@ -1,6 +1,7 @@
-import 'package:cosmolot/models/file_article_rocket.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:cosmolot/models/file_article_rocket.dart';
+import 'package:intl/intl.dart';
 
 class DetailPage extends StatelessWidget {
   final RocketArticle article;
@@ -10,8 +11,9 @@ class DetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xff2E073F),
+      backgroundColor: const Color(0xff9B7EBD),
       appBar: AppBar(
+        surfaceTintColor: Colors.transparent,
         leading: IconButton(
           onPressed: () {
             Navigator.of(context).pop();
@@ -19,7 +21,7 @@ class DetailPage extends StatelessWidget {
           icon: const Icon(CupertinoIcons.back),
           color: Colors.white,
         ),
-        backgroundColor: const Color(0xFF3C0753),
+        backgroundColor: const Color(0xff9B7EBD),
         title: const Text(
           'SpaceX Launch Details',
           style: TextStyle(
@@ -48,7 +50,7 @@ class DetailPage extends StatelessWidget {
               ),
               const SizedBox(height: 20),
 
-              // Image Section
+              // Image Section with shadow
               Center(
                 child: Container(
                   decoration: BoxDecoration(
@@ -56,26 +58,34 @@ class DetailPage extends StatelessWidget {
                     boxShadow: [
                       BoxShadow(
                         color: Colors.black.withOpacity(0.3),
-                        blurRadius: 8,
-                        spreadRadius: 2,
-                        offset: const Offset(4, 4),
+                        blurRadius: 12,
+                        spreadRadius: 4,
+                        offset: const Offset(6, 6),
                       ),
                     ],
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(16),
-                    child: Image.asset(
+                    child: Image.network(
                       article.image,
                       fit: BoxFit.cover,
                       width: double.infinity,
-                      height: 200,
+                      height: 250,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Image.asset(
+                          'images/brat.webp',
+                          fit: BoxFit.cover,
+                          width: double.infinity,
+                          height: 250,
+                        );
+                      },
                     ),
                   ),
                 ),
               ),
               const SizedBox(height: 20),
 
-              // Grid Layout for Details Section
+              // Info Section
               GridView.builder(
                 shrinkWrap:
                     true, // Allows the grid to take up only necessary space
@@ -97,8 +107,12 @@ class DetailPage extends StatelessWidget {
                               : 'No missions available',
                           Colors.amber);
                     case 1:
-                      return _buildInfoContainer('Original Launch',
-                          article.originalLaunch, Colors.blue);
+                      return _buildInfoContainer(
+                          'Original Launch',
+                          DateFormat('MMMM dd, yyyy – hh:mm a').format(
+                            DateTime.parse(article.originalLaunch),
+                          ),
+                          Colors.blue);
                     case 2:
                       return _buildInfoContainer(
                           'Status', article.status, Colors.green);
@@ -117,18 +131,19 @@ class DetailPage extends StatelessWidget {
     );
   }
 
+  // Method to create the info container
   Widget _buildInfoContainer(String label, String value, Color color) {
     return Container(
       height: 120, // Fixed height for uniformity
       decoration: BoxDecoration(
         color: Colors.deepPurple[700],
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.3),
-            blurRadius: 6,
-            spreadRadius: 1,
-            offset: const Offset(2, 4),
+            color: Colors.black.withOpacity(0.4),
+            blurRadius: 8,
+            spreadRadius: 2,
+            offset: const Offset(4, 4),
           ),
         ],
       ),
@@ -139,7 +154,7 @@ class DetailPage extends StatelessWidget {
           Text(
             '$label:',
             style: TextStyle(
-              fontSize: 20,
+              fontSize: 18,
               fontWeight: FontWeight.bold,
               color: color,
             ),

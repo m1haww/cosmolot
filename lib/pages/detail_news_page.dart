@@ -10,8 +10,9 @@ class DetailNewsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xff2E073F),
+      backgroundColor: const Color(0xff9B7EBD), // Darker background color
       appBar: AppBar(
+        surfaceTintColor: Colors.transparent,
         leading: IconButton(
           onPressed: () {
             Navigator.of(context).pop();
@@ -19,7 +20,7 @@ class DetailNewsPage extends StatelessWidget {
           icon: const Icon(CupertinoIcons.back),
           color: Colors.white,
         ),
-        backgroundColor: const Color(0xFF3C0753),
+        backgroundColor: const Color(0xff9B7EBD), // Slightly darker purple
         title: const Text(
           "News",
           style: TextStyle(
@@ -42,9 +43,9 @@ class DetailNewsPage extends StatelessWidget {
                     boxShadow: [
                       BoxShadow(
                         color: Colors.black.withOpacity(0.3),
-                        blurRadius: 8,
-                        spreadRadius: 2,
-                        offset: const Offset(4, 4),
+                        blurRadius: 12,
+                        spreadRadius: 3,
+                        offset: const Offset(4, 6),
                       ),
                     ],
                   ),
@@ -54,13 +55,13 @@ class DetailNewsPage extends StatelessWidget {
                       article.imageUrl,
                       fit: BoxFit.cover,
                       width: double.infinity,
-                      height: 150,
+                      height: 200,
                       errorBuilder: (context, error, stackTrace) {
                         return Image.asset(
                           'images/brat.webp',
                           fit: BoxFit.cover,
                           width: double.infinity,
-                          height: 150,
+                          height: 200,
                         );
                       },
                     ),
@@ -72,9 +73,10 @@ class DetailNewsPage extends StatelessWidget {
               Text(
                 article.title,
                 style: const TextStyle(
-                  fontSize: 22,
+                  fontSize: 24,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
+                  height: 1.3,
                 ),
               ),
               const SizedBox(height: 10),
@@ -83,6 +85,7 @@ class DetailNewsPage extends StatelessWidget {
                 style: const TextStyle(
                   fontSize: 16,
                   color: Colors.white70,
+                  height: 1.2,
                 ),
               ),
               const SizedBox(height: 20),
@@ -91,8 +94,10 @@ class DetailNewsPage extends StatelessWidget {
                 style: const TextStyle(
                   fontSize: 16,
                   color: Colors.white,
+                  height: 1.5,
                 ),
               ),
+              const SizedBox(height: 20),
             ],
           ),
         ),

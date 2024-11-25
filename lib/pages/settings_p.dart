@@ -1,5 +1,7 @@
+import 'dart:io';
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class SettingsP extends StatefulWidget {
   const SettingsP({super.key});
@@ -9,6 +11,20 @@ class SettingsP extends StatefulWidget {
 }
 
 class _SettingsPState extends State<SettingsP> {
+  File? _image;
+
+  final ImagePicker _picker = ImagePicker();
+
+  Future<void> _pickImage() async {
+    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+
+    if (image != null) {
+      setState(() {
+        _image = File(image.path);
+      });
+    }
+  }
+
   Color _backgroundColor = Colors.deepPurple;
   String _currentImage = "images/bratan.jpg";
   final List<String> _spaceImages = [
@@ -49,12 +65,36 @@ class _SettingsPState extends State<SettingsP> {
         child: SafeArea(
           child: Stack(
             children: [
-              // Stars animation in the background
               const AnimatedStars(),
               Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.03,
+                  ),
+                  GestureDetector(
+                    onTap: _pickImage,
+                    child: Container(
+                      width: MediaQuery.of(context).size.height * 0.15,
+                      height: MediaQuery.of(context).size.height * 0.15,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(color: Colors.black45, width: 2),
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(
+                            MediaQuery.of(context).size.height * 0.075),
+                        child: _image == null
+                            ? Image.asset(
+                                'images/avatar_default.jpg',
+                                fit: BoxFit.contain,
+                              )
+                            : Image.file(
+                                _image!,
+                                fit: BoxFit.cover,
+                              ),
+                      ),
+                    ),
+                  ),
                   Padding(
                     padding: const EdgeInsets.all(20.0),
                     child: AnimatedSwitcher(
@@ -96,8 +136,8 @@ class _SettingsPState extends State<SettingsP> {
                       ),
                     ),
                     child: const Text(
-                      "Discover !",
-                      style: TextStyle(color: Colors.black),
+                      "Discover!",
+                      style: TextStyle(color: Colors.white),
                     ),
                   ),
                 ],
