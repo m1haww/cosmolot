@@ -38,7 +38,7 @@ class _SearchIconcaAparteState extends State<SearchIconcaAparte> {
 
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height; // Get the screen height
+    final height = MediaQuery.of(context).size.height;
 
     return SafeArea(
       child: Scaffold(
@@ -104,7 +104,13 @@ class _SearchIconcaAparteState extends State<SearchIconcaAparte> {
                 ),
               ),
               Expanded(
-                child: ListView.builder(
+                child: GridView.builder(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2, // Set the number of columns
+                    crossAxisSpacing: 10, // Space between columns
+                    mainAxisSpacing: 10, // Space between rows
+                    childAspectRatio: 1, // Adjust aspect ratio for grid items
+                  ),
                   itemCount: filteredArticles.length,
                   itemBuilder: (context, index) {
                     final article = filteredArticles[index];
@@ -119,8 +125,6 @@ class _SearchIconcaAparteState extends State<SearchIconcaAparte> {
                         );
                       },
                       child: Container(
-                        margin: const EdgeInsets.symmetric(
-                            horizontal: 15, vertical: 10),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
                           boxShadow: [
@@ -173,7 +177,7 @@ class _SearchIconcaAparteState extends State<SearchIconcaAparte> {
                                     article.title,
                                     style: const TextStyle(
                                       color: Colors.white,
-                                      fontSize: 18,
+                                      fontSize: 16,
                                       fontWeight: FontWeight.bold,
                                     ),
                                     maxLines: 2,
@@ -184,7 +188,7 @@ class _SearchIconcaAparteState extends State<SearchIconcaAparte> {
                                     article.publishedAt.substring(0, 10),
                                     style: const TextStyle(
                                       color: Colors.white70,
-                                      fontSize: 14,
+                                      fontSize: 12,
                                     ),
                                   ),
                                 ],
