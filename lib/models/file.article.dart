@@ -13,7 +13,8 @@ class Article {
     required this.publishedAt,
   });
 
-  // Method to convert a single article from JSON
+  get category => null;
+
   static Article fromJson(Map<String, dynamic> data) {
     return Article(
       title: data['title'],
@@ -24,7 +25,6 @@ class Article {
     );
   }
 
-  // Method to convert a list of articles from JSON
   static List<Article> fromJsonList(List<dynamic> data) {
     return data.map((articleData) => Article.fromJson(articleData)).toList();
   }

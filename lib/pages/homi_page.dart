@@ -1,6 +1,7 @@
 import 'package:cosmolot/models/file.article.dart';
 import 'package:cosmolot/models/icon_clopotel.dart';
 import 'package:cosmolot/pages/detail_news_page.dart';
+import 'package:cosmolot/pages/search_iconca_aparte.dart';
 import 'package:cosmolot/pages/view_all.dart';
 import 'package:flutter/material.dart';
 import 'package:cosmolot/utils/utils.api.dart';
@@ -102,7 +103,17 @@ class _HomiPageState extends State<HomiPage> {
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.search),
+            icon: GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const SearchIconcaAparte(
+                          articles: [],
+                        ),
+                      ));
+                },
+                child: const Icon(Icons.search)),
             onPressed: () {
               setState(() {
                 isSearching = !isSearching;

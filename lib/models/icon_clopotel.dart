@@ -1,3 +1,4 @@
+import 'package:cosmolot/pages/pagina_destinata_pentru_clopotel_cu_detalii.dart';
 import 'package:cosmolot/utils/utils.api.dart';
 import 'package:flutter/material.dart';
 
@@ -66,21 +67,30 @@ class NotificationIcon extends StatelessWidget {
                               },
                             ),
                           ),
-                          title: Text(
-                            article
-                                .title, // Display article title from your data
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors
-                                  .white, // Text color to match the dark background
+                          title: GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      PaginaDestinataPentruClopotelCuDetalii(
+                                          article: article),
+                                ),
+                              );
+                            },
+                            child: Text(
+                              article.title,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
                             ),
                           ),
                           subtitle: Text(
-                            'Published at: ${article.publishedAt.substring(0, 10)}', // Display the publication date
+                            'Published at: ${article.publishedAt.substring(0, 10)}',
                             style: TextStyle(
                               fontSize: 12,
-                              color: Colors
-                                  .grey[400], // Lighter grey text for subtitle
+                              color: Colors.grey[400],
                             ),
                           ),
                         ),

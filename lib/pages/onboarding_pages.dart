@@ -159,7 +159,7 @@ class _OnboardingPagesState extends State<OnboardingPages> {
                       ),
                     ),
                   ),
-                // Next / Start Button
+
                 ElevatedButton(
                   onPressed: _currentPage == _onboardingData.length - 1
                       ? _skipOnboarding
