@@ -108,8 +108,8 @@ class _HomiPageState extends State<HomiPage> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const SearchIconcaAparte(
-                          articles: [],
+                        builder: (context) => SearchIconcaAparte(
+                          articles: articles,
                         ),
                       ));
                 },
