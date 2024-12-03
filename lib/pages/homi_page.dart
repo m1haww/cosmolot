@@ -31,26 +31,6 @@ class _HomiPageState extends State<HomiPage> {
     filteredRecommendations = recommendationArticles;
   }
 
-  void _filterArticles(String query) {
-    setState(() {
-      searchQuery = query;
-      if (query.isEmpty) {
-        filteredBreakingNews = breakingNewsArticles;
-        filteredRecommendations = recommendationArticles;
-      } else {
-        filteredBreakingNews = breakingNewsArticles.where((article) {
-          return article.title.toLowerCase().contains(query.toLowerCase()) ||
-              article.newsSite.toLowerCase().contains(query.toLowerCase());
-        }).toList();
-
-        filteredRecommendations = recommendationArticles.where((article) {
-          return article.title.toLowerCase().contains(query.toLowerCase()) ||
-              article.newsSite.toLowerCase().contains(query.toLowerCase());
-        }).toList();
-      }
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,9 +50,6 @@ class _HomiPageState extends State<HomiPage> {
                   padding: const EdgeInsets.only(left: 10.0),
                   child: TextField(
                     autofocus: true,
-                    onChanged: (query) {
-                      _filterArticles(query);
-                    },
                     style: const TextStyle(color: Colors.white),
                     decoration: const InputDecoration(
                       hintText: 'Search articles...',
@@ -117,9 +94,7 @@ class _HomiPageState extends State<HomiPage> {
             onPressed: () {
               setState(() {
                 isSearching = !isSearching;
-                if (!isSearching) {
-                  _filterArticles('');
-                }
+                if (!isSearching) {}
               });
             },
           ),

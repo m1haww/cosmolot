@@ -12,7 +12,7 @@ class PaginaDestinataPentruClopotelCuDetalii extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color(0xff9B7EBD),
       appBar: AppBar(
-        title: Text(article.title), // Display the article title
+        title: Text(article.title),
         backgroundColor: const Color(0xff9B7EBD),
       ),
       body: Padding(
@@ -50,7 +50,7 @@ class PaginaDestinataPentruClopotelCuDetalii extends StatelessWidget {
               'Published at: ${article.publishedAt}', // Published date
               style: const TextStyle(
                 fontSize: 14,
-                color: Color.fromARGB(255, 127, 122, 122),
+                color: Color(0xff7A1CAC),
               ),
             ),
           ],
