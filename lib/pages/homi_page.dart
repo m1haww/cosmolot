@@ -46,12 +46,12 @@ class _HomiPageState extends State<HomiPage> {
                   color: const Color(0xff2E073F),
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 10.0),
+                child: const Padding(
+                  padding: EdgeInsets.only(left: 10.0),
                   child: TextField(
                     autofocus: true,
-                    style: const TextStyle(color: Colors.white),
-                    decoration: const InputDecoration(
+                    style: TextStyle(color: Colors.white),
+                    decoration: InputDecoration(
                       hintText: 'Search articles...',
                       hintStyle: TextStyle(color: Colors.white70),
                       border: InputBorder.none,

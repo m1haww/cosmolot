@@ -12,7 +12,6 @@ class SettingsP extends StatefulWidget {
 
 class _SettingsPState extends State<SettingsP> {
   File? _image;
-
   final ImagePicker _picker = ImagePicker();
 
   Future<void> _pickImage() async {
@@ -37,16 +36,25 @@ class _SettingsPState extends State<SettingsP> {
     "images/spacecraft-441708_1280.webp",
   ];
 
+  // List of background colors
+  final List<Color> _backgroundColors = [
+    Colors.deepPurple,
+    Colors.blue,
+    Colors.red,
+    Colors.green,
+    Colors.orange,
+    Colors.indigo,
+    Colors.pink,
+  ];
+
   void _triggerRandomEvent() {
     final random = Random();
     setState(() {
-      _backgroundColor = Color.fromRGBO(
-        random.nextInt(256),
-        random.nextInt(256),
-        random.nextInt(256),
-        1,
-      );
+      // Randomly select a background color
+      _backgroundColor =
+          _backgroundColors[random.nextInt(_backgroundColors.length)];
 
+      // Randomly select an image from the list
       _currentImage = _spaceImages[random.nextInt(_spaceImages.length)];
     });
   }
@@ -128,16 +136,94 @@ class _SettingsPState extends State<SettingsP> {
                   ),
                   const SizedBox(height: 20),
                   ElevatedButton(
-                    onPressed: _triggerRandomEvent,
+                    onPressed: () {
+                      // Show a dialog with a fun message when the "Discover" button is pressed
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: const Text(
+                              'Cosmic Discovery!',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            content: const Text(
+                              'You have discovered something amazing in the cosmos!',
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.black,
+                              ),
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context)
+                                      .pop(); // Close the dialog
+                                },
+                                child: const Text(
+                                  'Close',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.blue,
+                                  ),
+                                ),
+                              ),
+                              ElevatedButton(
+                                onPressed: () {
+                                  Navigator.of(context)
+                                      .pop(); // Close the dialog
+                                  // Trigger random event to change image and background color
+                                  _triggerRandomEvent();
+
+                                  // Show the SnackBar
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: const Text(
+                                        'Cosmic Discovery Complete!',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      backgroundColor: const Color(0xff2E073F),
+                                      duration: const Duration(seconds: 2),
+                                    ),
+                                  );
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Color(0xff7A1CAC),
+                                ),
+                                child: const Text(
+                                  'Proceed',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.deepPurpleAccent,
+                      backgroundColor: const Color(0xff2E073F),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 8,
                       ),
                     ),
                     child: const Text(
-                      "Discover!",
-                      style: TextStyle(color: Colors.white),
+                      'Discover',
+                      style: TextStyle(
+                        color: Color(0xffF5CCA0),
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ],
