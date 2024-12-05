@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:math';
+import 'package:cosmolot/models/info_final_page.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -175,27 +176,15 @@ class _SettingsPState extends State<SettingsP> {
                                 onPressed: () {
                                   Navigator.of(context)
                                       .pop(); // Close the dialog
-                                  // Trigger random event to change image and background color
-                                  _triggerRandomEvent();
-
-                                  // Show the SnackBar
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: const Text(
-                                        'Cosmic Discovery Complete!',
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                      backgroundColor: const Color(0xff2E073F),
-                                      duration: const Duration(seconds: 2),
-                                    ),
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const InfoFinalPage()),
                                   );
                                 },
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: Color(0xff7A1CAC),
+                                  backgroundColor: Color(0xffAD49E1),
                                 ),
                                 child: const Text(
                                   'Proceed',
