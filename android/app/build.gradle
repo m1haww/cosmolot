@@ -7,9 +7,22 @@ plugins {
 
 android {
     namespace = "com.example.cosmolot"
-    compileSdk = flutter.compileSdkVersion
+    compileSdk = 34
     ndkVersion = flutter.ndkVersion
 
+    defaultConfig {
+        applicationId = "com.example.cosmolot"
+        minSdk = 21
+        targetSdk = 34
+        versionCode = 1
+        versionName = "1.0"
+
+        // Placeholder for applicationName, required by Google Maps
+        manifestPlaceholders = [
+            applicationName: "android.app.Application",
+            GOOGLE_MAPS_API_KEY: "YOUR_API_KEY_HERE" // Replace with your Google Maps API Key
+        ]
+    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8

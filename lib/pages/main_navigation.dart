@@ -1,3 +1,4 @@
+import 'package:cosmolot/pages/calendar_cosmic.dart';
 import 'package:cosmolot/pages/settings_p.dart';
 import 'package:cosmolot/pages/watch_page.dart';
 import 'package:flutter/cupertino.dart';
@@ -16,12 +17,14 @@ class _MainNavigationState extends State<MainNavigation> {
 
   final List<Widget> _tabViews = [
     const HomiPage(),
+    CalendarCosmic(),
     const WatchPage(),
-    const SettingsP(),
+    const WatchPage(),
   ];
 
   final List<IconData> _tabIcons = [
     CupertinoIcons.rocket,
+    CupertinoIcons.calendar,
     CupertinoIcons.book_solid,
     CupertinoIcons.gift_fill,
   ];

@@ -2,7 +2,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 class InfoFinalPage extends StatefulWidget {
-  const InfoFinalPage({Key? key}) : super(key: key);
+  const InfoFinalPage({super.key});
 
   @override
   State<InfoFinalPage> createState() => _InfoFinalPageState();
@@ -110,7 +110,7 @@ class _InfoFinalPageState extends State<InfoFinalPage> {
                   Navigator.pop(context); // Navigate back to the previous page
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xffAD49E1),
+                  backgroundColor: const Color(0xffAD49E1),
                 ),
                 child: const Text(
                   "Go Back",
