@@ -1,5 +1,4 @@
 import 'package:cosmolot/pages/calendar_cosmic.dart';
-import 'package:cosmolot/pages/settings_p.dart';
 import 'package:cosmolot/pages/watch_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
