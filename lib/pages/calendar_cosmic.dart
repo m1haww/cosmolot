@@ -215,7 +215,6 @@ class _CalendarCosmicState extends State<CalendarCosmic> {
               child: FloatingActionButton(
                 onPressed: () {
                   // Inside your FloatingActionButton builder for the bottom sheet
-
                   showModalBottomSheet(
                     backgroundColor: Color(0xffEBD3F8),
                     context: context,
@@ -224,119 +223,129 @@ class _CalendarCosmicState extends State<CalendarCosmic> {
                     ),
                     isScrollControlled: true,
                     builder: (BuildContext context) {
-                      return Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              "Choose a day to add a note",
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.purple[800],
-                              ),
-                            ),
-                            TableCalendar(
-                              focusedDay: _focusedDay,
-                              firstDay: DateTime.utc(2020, 1, 1),
-                              lastDay: DateTime.utc(2099, 12, 31),
-                              selectedDayPredicate: (day) {
-                                return isSameDay(day, _selectedDay);
-                              },
-                              onDaySelected: (selectedDay, focusedDay) {
-                                setState(() {
-                                  _selectedDay = selectedDay;
-                                  _focusedDay = focusedDay;
-                                });
-                              },
-                              calendarStyle: CalendarStyle(
-                                todayDecoration: const BoxDecoration(
-                                  color: Colors.purple,
-                                  shape: BoxShape.circle,
-                                ),
-                                selectedDecoration: BoxDecoration(
-                                  color: Colors.deepPurple[
-                                      700], // Change to a more visible color
-                                  shape: BoxShape.circle,
-                                ),
-                                markersAlignment: Alignment.bottomCenter,
-                                markersMaxCount: 3,
-                              ),
-                              headerStyle: HeaderStyle(
-                                formatButtonVisible: false,
-                                titleCentered: true,
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(16),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 20),
-                            TextField(
-                              controller: _noteController,
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                              ),
-                              onChanged: (value) {
-                                setState(() {
-                                  _notes[_selectedDay] = value;
-                                });
-                              },
-                              maxLines: null,
-                              minLines: 2,
-                            ),
-                            const SizedBox(height: 20),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                      // Wrap the content of the modal in a StatefulBuilder
+                      return StatefulBuilder(
+                        builder:
+                            (BuildContext context, StateSetter setModalState) {
+                          return Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
                               children: [
-                                ElevatedButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      _notes[_selectedDay] =
-                                          _noteController.text;
-                                    });
-                                    Navigator.pop(context); // Close the modal
-                                    _noteController
-                                        .clear(); // Clear the text field after saving
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: Color(0xff7A1CAC),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(12),
-                                    ),
-                                  ),
-                                  child: const Text(
-                                    "Save Note",
-                                    style: TextStyle(color: Colors.white),
+                                Text(
+                                  "Choose a day to add a note",
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.purple[800],
                                   ),
                                 ),
-                                const SizedBox(width: 10),
-                                ElevatedButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      _noteController
-                                          .clear(); // Clear the text field on cancel
-                                    });
-                                    Navigator.pop(context); // Close the modal
+                                TableCalendar(
+                                  focusedDay: _focusedDay,
+                                  firstDay: DateTime.utc(2020, 1, 1),
+                                  lastDay: DateTime.utc(2099, 12, 31),
+                                  selectedDayPredicate: (day) {
+                                    return isSameDay(day, _selectedDay);
                                   },
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: Color(0xff7A1CAC),
-                                    shape: RoundedRectangleBorder(
+                                  onDaySelected: (selectedDay, focusedDay) {
+                                    setModalState(() {
+                                      _selectedDay = selectedDay;
+                                      _focusedDay = focusedDay;
+                                    });
+                                  },
+                                  calendarStyle: CalendarStyle(
+                                    todayDecoration: const BoxDecoration(
+                                      color: Colors.purple,
+                                      shape: BoxShape.circle,
+                                    ),
+                                    selectedDecoration: BoxDecoration(
+                                      color: Colors.deepPurple[
+                                          700], // More visible selected color
+                                      shape: BoxShape.circle,
+                                    ),
+                                    markersAlignment: Alignment.bottomCenter,
+                                    markersMaxCount: 3,
+                                  ),
+                                  headerStyle: HeaderStyle(
+                                    formatButtonVisible: false,
+                                    titleCentered: true,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(16),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 20),
+                                TextField(
+                                  controller: _noteController,
+                                  decoration: InputDecoration(
+                                    border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(12),
                                     ),
                                   ),
-                                  child: const Text(
-                                    "Cancel",
-                                    style: TextStyle(color: Colors.white),
-                                  ),
+                                  onChanged: (value) {
+                                    setModalState(() {
+                                      _notes[_selectedDay] = value;
+                                    });
+                                  },
+                                  maxLines: null,
+                                  minLines: 2,
+                                ),
+                                const SizedBox(height: 20),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        setModalState(() {
+                                          _notes[_selectedDay] =
+                                              _noteController.text;
+                                        });
+                                        Navigator.pop(
+                                            context); // Close the modal
+                                        _noteController
+                                            .clear(); // Clear the text field after saving
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Color(0xff7A1CAC),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                        ),
+                                      ),
+                                      child: const Text(
+                                        "Save Note",
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                    ),
+                                    const SizedBox(width: 10),
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        setModalState(() {
+                                          _noteController
+                                              .clear(); // Clear the text field on cancel
+                                        });
+                                        Navigator.pop(
+                                            context); // Close the modal
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Color(0xff7A1CAC),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                        ),
+                                      ),
+                                      child: const Text(
+                                        "Cancel",
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
-                          ],
-                        ),
+                          );
+                        },
                       );
                     },
                   );
