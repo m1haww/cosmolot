@@ -214,7 +214,6 @@ class _CalendarCosmicState extends State<CalendarCosmic> {
               padding: const EdgeInsets.only(bottom: 100.0),
               child: FloatingActionButton(
                 onPressed: () {
-                  // Inside your FloatingActionButton builder for the bottom sheet
                   showModalBottomSheet(
                     backgroundColor: Color(0xffEBD3F8),
                     context: context,
@@ -297,7 +296,7 @@ class _CalendarCosmicState extends State<CalendarCosmic> {
                                   children: [
                                     ElevatedButton(
                                       onPressed: () {
-                                        setModalState(() {
+                                        setState(() {
                                           _notes[_selectedDay] =
                                               _noteController.text;
                                         });
@@ -321,7 +320,7 @@ class _CalendarCosmicState extends State<CalendarCosmic> {
                                     const SizedBox(width: 10),
                                     ElevatedButton(
                                       onPressed: () {
-                                        setModalState(() {
+                                        setState(() {
                                           _noteController
                                               .clear(); // Clear the text field on cancel
                                         });

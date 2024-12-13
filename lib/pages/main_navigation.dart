@@ -1,4 +1,6 @@
 import 'package:cosmolot/pages/calendar_cosmic.dart';
+import 'package:cosmolot/pages/google_maps.dart';
+import 'package:cosmolot/pages/settings_p.dart';
 import 'package:cosmolot/pages/watch_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -16,13 +18,15 @@ class _MainNavigationState extends State<MainNavigation> {
 
   final List<Widget> _tabViews = [
     const HomiPage(),
+    GoogleMaps(),
     CalendarCosmic(),
     const WatchPage(),
-    const WatchPage(),
+    SettingsP(),
   ];
 
   final List<IconData> _tabIcons = [
     CupertinoIcons.rocket,
+    CupertinoIcons.map,
     CupertinoIcons.calendar,
     CupertinoIcons.book_solid,
     CupertinoIcons.gift_fill,
