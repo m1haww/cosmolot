@@ -19,23 +19,13 @@ class _GoogleMapsState extends State<GoogleMaps> {
       position: LatLng(33.9207, -118.3280),
       infoWindow: InfoWindow(title: 'SpaceX Headquarters'),
     ),
-    const Marker(
-      markerId: MarkerId('teslaDesignStudio'),
-      position: LatLng(33.9224, -118.3290),
-      infoWindow: InfoWindow(title: 'Tesla Design Studio'),
-    ),
-    const Marker(
-      markerId: MarkerId('hawthorneAirport'),
-      position: LatLng(33.9225, -118.3340),
-      infoWindow: InfoWindow(title: 'Hawthorne Municipal Airport'),
-    ),
   };
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Google Maps with Markers'),
+        title: const Text('Maps'),
       ),
       body: GoogleMap(
         initialCameraPosition: CameraPosition(
