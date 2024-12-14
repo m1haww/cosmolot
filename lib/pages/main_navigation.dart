@@ -18,10 +18,10 @@ class _MainNavigationState extends State<MainNavigation> {
 
   final List<Widget> _tabViews = [
     const HomiPage(),
-    GoogleMaps(),
-    CalendarCosmic(),
+    const GoogleMaps(),
+    const CalendarCosmic(),
     const WatchPage(),
-    SettingsP(),
+    const SettingsP(),
   ];
 
   final List<IconData> _tabIcons = [

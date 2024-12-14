@@ -166,7 +166,7 @@ class _CalendarCosmicState extends State<CalendarCosmic> {
                       end: Alignment.bottomRight,
                     ),
                     borderRadius: BorderRadius.circular(16),
-                    boxShadow: [
+                    boxShadow: const [
                       BoxShadow(
                         color: Colors.black26,
                         offset: Offset(2, 4),
@@ -179,7 +179,7 @@ class _CalendarCosmicState extends State<CalendarCosmic> {
                     children: [
                       Text(
                         'Your Note for ${_selectedDay.toLocal().toString().split(' ')[0]}',
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Colors.white,
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -215,7 +215,7 @@ class _CalendarCosmicState extends State<CalendarCosmic> {
               child: FloatingActionButton(
                 onPressed: () {
                   showModalBottomSheet(
-                    backgroundColor: Color(0xffEBD3F8),
+                    backgroundColor: const Color(0xffEBD3F8),
                     context: context,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16.0),
@@ -306,7 +306,8 @@ class _CalendarCosmicState extends State<CalendarCosmic> {
                                             .clear(); // Clear the text field after saving
                                       },
                                       style: ElevatedButton.styleFrom(
-                                        backgroundColor: Color(0xff7A1CAC),
+                                        backgroundColor:
+                                            const Color(0xff7A1CAC),
                                         shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(12),
@@ -328,7 +329,8 @@ class _CalendarCosmicState extends State<CalendarCosmic> {
                                             context); // Close the modal
                                       },
                                       style: ElevatedButton.styleFrom(
-                                        backgroundColor: Color(0xff7A1CAC),
+                                        backgroundColor:
+                                            const Color(0xff7A1CAC),
                                         shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(12),
