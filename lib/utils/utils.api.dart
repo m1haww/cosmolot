@@ -19,11 +19,6 @@ Future<void> fetchArticles() async {
       // Extract the 'results' part of the JSON response and convert it to a list of Article objects
       articles = Article.fromJsonList(data['results']);
 
-      // Print out the titles of the articles (or handle them as needed)
-      for (var article in articles) {
-        print(article.title);
-      }
-
       // Handle the articles as needed, e.g., passing them to your UI
     } else {
       print('Request failed with status: ${response.statusCode}');

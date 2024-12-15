@@ -1,8 +1,7 @@
-import 'dart:convert';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:location/location.dart';
-import 'package:http/http.dart' as http;
 
 class GoogleMaps extends StatefulWidget {
   const GoogleMaps({super.key});
@@ -16,15 +15,14 @@ class _GoogleMapsState extends State<GoogleMaps> {
   final LatLng _spacexHq = const LatLng(33.9207, -118.3280);
   final Set<Marker> _markers = {};
   final Set<Polyline> _polylines = {};
-  LocationData? _currentLocation;
-  String googleMapsApiKey =
-      'YOUR_GOOGLE_MAPS_API_KEY'; // Replace with your API key
+
+  CameraPosition? _currentLocation;
 
   @override
   void initState() {
     super.initState();
-    _setMarkers();
     _getUserLocation();
+    _setMarkers();
   }
 
   void _setMarkers() {
@@ -39,107 +37,112 @@ class _GoogleMapsState extends State<GoogleMaps> {
   }
 
   Future<void> _getUserLocation() async {
-    Location location = Location();
-
-    if (!await location.serviceEnabled()) {
-      if (!await location.requestService()) return;
+    LocationPermission permission = await Geolocator.requestPermission();
+    if (permission == LocationPermission.whileInUse ||
+        permission == LocationPermission.always) {
+      Position currentPosition = await Geolocator.getCurrentPosition();
+      _currentLocation = CameraPosition(
+        zoom: 14,
+        target: LatLng(currentPosition.latitude, currentPosition.longitude),
+      );
     }
+    setState(() {});
+  }
 
-    PermissionStatus permission = await location.hasPermission();
-    if (permission == PermissionStatus.denied) {
-      permission = await location.requestPermission();
-      if (permission != PermissionStatus.granted) return;
-    }
+  Future<void> _getDirections() async {
+    final string = await getGeometryString(_currentLocation!.target);
 
-    final userLocation = await location.getLocation();
+    final latLngList = decodePolyline(string);
+
     setState(() {
-      _currentLocation = userLocation;
-      _markers.add(
-        Marker(
-          markerId: const MarkerId('currentLocation'),
-          position: LatLng(userLocation.latitude!, userLocation.longitude!),
-          infoWindow: const InfoWindow(title: 'Your Location'),
+      _polylines.add(
+        Polyline(
+          polylineId: const PolylineId('route_path'),
+          points: latLngList,
+          color: Colors.black,
+          width: 5,
         ),
       );
-      _getDirections(LatLng(userLocation.latitude!, userLocation.longitude!));
     });
   }
 
-  Future<void> _getDirections(LatLng origin) async {
-    final directionsUrl =
-        'https://maps.googleapis.com/maps/api/directions/json?origin=${origin.latitude},${origin.longitude}&destination=${_spacexHq.latitude},${_spacexHq.longitude}&key=$googleMapsApiKey';
+  Future<String> getGeometryString(LatLng routePoint) async {
+    const String openRouteServiceToken =
+        "5b3ce3597851110001cf624820cabfa7b863436d8e77699410fbf3ba";
 
-    final response = await http.get(Uri.parse(directionsUrl));
+    final Dio dio = Dio();
 
-    if (response.statusCode == 200) {
-      final data = json.decode(response.body);
-      if (data['routes'].isNotEmpty) {
-        final route = data['routes'][0]['legs'][0]['steps'] as List;
-        final List<LatLng> polylineCoordinates = [];
+    final coordinates = [
+      [routePoint.longitude, routePoint.latitude],
+      [_spacexHq.longitude, _spacexHq.latitude]
+    ];
 
-        for (var step in route) {
-          final polylinePoints = step['polyline']['points'];
-          polylineCoordinates.addAll(_decodePolyline(polylinePoints));
-        }
+    const url = 'https://api.openrouteservice.org/v2/directions/driving-car';
+    final headers = {
+      "Accept":
+          "application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8",
+      "Authorization": openRouteServiceToken,
+      "Content-Type": "application/json; charset=utf-8",
+    };
 
-        setState(() {
-          _polylines.add(
-            Polyline(
-              polylineId: PolylineId('route'),
-              points: polylineCoordinates,
-              color: Colors.blue,
-              width: 5,
-            ),
-          );
-        });
+    try {
+      final response = await dio.post(
+        url,
+        options: Options(headers: headers),
+        data: {
+          "coordinates": coordinates,
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final data = response.data;
+        final geometry = data['routes'][0]['geometry'];
+
+        return geometry;
       }
-    } else {
-      print('Failed to get directions');
+    } catch (e) {
+      debugPrint('Error fetching route: $e');
     }
+    return "";
   }
 
-  List<LatLng> _decodePolyline(String encoded) {
-    List<LatLng> polylineCoordinates = [];
-    int index = 0;
-    int len = encoded.length;
-    int lat = 0;
-    int lng = 0;
+  List<LatLng> decodePolyline(String encoded) {
+    List<LatLng> polyline = [];
+    int index = 0, len = encoded.length;
+    int lat = 0, lng = 0;
 
     while (index < len) {
-      int b, shift = 0, result = 0;
+      int shift = 0, result = 0;
+      int b;
       do {
-        b = encoded.codeUnitAt(index) - 63;
-        index++;
+        b = encoded.codeUnitAt(index++) - 63;
         result |= (b & 0x1f) << shift;
         shift += 5;
       } while (b >= 0x20);
-
-      int dLat = ((result & 1) != 0 ? ~(result >> 1) : (result >> 1));
-      lat += dLat;
+      int dlat = ((result & 1) != 0 ? ~(result >> 1) : (result >> 1));
+      lat += dlat;
 
       shift = 0;
       result = 0;
       do {
-        b = encoded.codeUnitAt(index) - 63;
-        index++;
+        b = encoded.codeUnitAt(index++) - 63;
         result |= (b & 0x1f) << shift;
         shift += 5;
       } while (b >= 0x20);
+      int dlng = ((result & 1) != 0 ? ~(result >> 1) : (result >> 1));
+      lng += dlng;
 
-      int dLng = ((result & 1) != 0 ? ~(result >> 1) : (result >> 1));
-      lng += dLng;
-
-      polylineCoordinates.add(LatLng(lat / 1E5, lng / 1E5));
+      polyline.add(LatLng(lat / 1E5, lng / 1E5));
     }
-
-    return polylineCoordinates;
+    return polyline;
   }
 
   void _centerOnUser() {
     if (_currentLocation != null) {
       _mapController.animateCamera(
         CameraUpdate.newLatLngZoom(
-          LatLng(_currentLocation!.latitude!, _currentLocation!.longitude!),
+          LatLng(_currentLocation!.target.latitude,
+              _currentLocation!.target.longitude),
           15,
         ),
       );
@@ -157,8 +160,11 @@ class _GoogleMapsState extends State<GoogleMaps> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Color(0xffAD49E1),
-        title: const Text('Maps'),
+        backgroundColor: const Color(0xffAD49E1),
+        title: const Text(
+          'Maps',
+          style: TextStyle(color: Colors.white),
+        ),
       ),
       body: SafeArea(
         child: Stack(
@@ -174,7 +180,8 @@ class _GoogleMapsState extends State<GoogleMaps> {
                 _mapController = controller;
               },
               myLocationEnabled: true,
-              myLocationButtonEnabled: false,
+              myLocationButtonEnabled: true,
+              zoomControlsEnabled: false,
             ),
             Positioned(
               top: 10,
@@ -189,16 +196,18 @@ class _GoogleMapsState extends State<GoogleMaps> {
                 top: 80,
                 right: 10,
                 child: FloatingActionButton(
-                  onPressed: _centerOnUser,
+                  onPressed: () {
+                    _centerOnUser();
+                  },
                   child: const Icon(Icons.my_location),
                 ),
               ),
             Positioned(
-              bottom: 115,
+              bottom: 80,
               left: 0,
               right: 0,
               child: Card(
-                color: Color(0xff7A1CAC),
+                color: const Color(0xff7A1CAC),
                 elevation: 4,
                 child: Padding(
                   padding: const EdgeInsets.all(12.0),
@@ -210,13 +219,20 @@ class _GoogleMapsState extends State<GoogleMaps> {
                       const Text(
                         'SpaceX Headquarters',
                         style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
                       ),
                       const SizedBox(height: 8),
-                      const Text('Address: 1 Rocket Road, Hawthorne, CA 90250'),
+                      const Text(
+                        'Address: 1 Rocket Road, Hawthorne, CA 90250',
+                        style: TextStyle(color: Colors.white60),
+                      ),
                       const SizedBox(height: 12),
                       ElevatedButton.icon(
-                        onPressed: () {},
+                        onPressed: () {
+                          _getDirections();
+                        },
                         icon: const Icon(Icons.directions),
                         label: const Text('Get Directions'),
                       ),
